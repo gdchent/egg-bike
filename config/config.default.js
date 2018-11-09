@@ -22,5 +22,22 @@ module.exports = appInfo => {
     }
   }
 
+  // jwt
+  config.jwt = {
+    enable: true,
+    secret: 'cheesekun',
+    ignore: '/login'
+  }
+
+  // web csrf 安全配置
+  config.security = {
+    xframe: {
+      enable: false
+    },
+    csrf: {
+      enable: false
+    }
+  }
+
   return config
 }
