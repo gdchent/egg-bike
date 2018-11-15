@@ -1,7 +1,7 @@
 module.exports = app => {
   const { STRING, INTEGER } = app.Sequelize
 
-  const User = app.model.define('user', {
+  const Admin = app.model.define('admin', {
     Id: {
       type: INTEGER(11),
       primaryKey: true,
@@ -17,14 +17,13 @@ module.exports = app => {
     }
   })
 
-  // 查询指定用户
-  User.getUser = async function (params) {
-    let user = await this.findOne({
+  // 查询指定管理员
+  Admin.getUser = async function (params) {
+    let admin = await this.findOne({
       where: params
     })
-
-    return user
+    return admin
   }
 
-  return User
+  return Admin
 }

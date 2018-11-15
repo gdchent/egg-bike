@@ -26,7 +26,7 @@ module.exports = appInfo => {
   config.jwt = {
     enable: true,
     secret: 'cheesekun',
-    ignore: '/login'
+    ignore: ['/login', '/user', '/admin/login']
   }
 
   // web csrf 安全配置
@@ -37,6 +37,29 @@ module.exports = appInfo => {
     csrf: {
       enable: false
     }
+  }
+
+  // 错误处理
+  config.onerror = {
+    all (err, ctx) {
+      ctx.status = err.status
+      // ctx.body = JSON.stringify(err)
+      switch (err.status) {
+        case 401:
+        case 500:
+          ctx.body = JSON.stringify({
+            code: 0,
+            msg: err.message
+          })
+      }
+    }
+  }
+
+  // 默认code
+  config.code = {
+    success: 1,
+    fail: 0,
+    error: -1
   }
 
   return config

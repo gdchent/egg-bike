@@ -39,6 +39,15 @@ class TokenService extends Service {
       })
     })
   }
+
+  // 解析token
+  async decodeToken (token) {
+    if (token !== '') {
+      // 去掉 Bearer
+      token = token.split(' ')[1]
+    }
+    return this.app.jwt.decode(token)
+  }
 }
 
 module.exports = TokenService
