@@ -30,10 +30,10 @@ exports.success = (ctx, result = null, message = '请求成功', status = 200) =
 }
 
 // 处理失败响应
-exports.error = (ctx, code, message) => {
+exports.error = (ctx, code, message, status = 200) => {
   ctx.body = {
     code: code,
     message: message
   }
-  ctx.status = code
+  ctx.status = status
 }
