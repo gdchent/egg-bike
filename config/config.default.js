@@ -26,7 +26,7 @@ module.exports = appInfo => {
   config.jwt = {
     enable: true,
     secret: 'cheesekun',
-    ignore: ['/login', '/user', '/admin/login']
+    ignore: ['/login', '/user', '/article', '/admin/login']
   }
 
   // web csrf 安全配置
