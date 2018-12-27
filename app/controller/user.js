@@ -3,6 +3,7 @@
 const Controller = require('egg').Controller
 
 class UserController extends Controller {
+  // 获取到所有用户
   async index () {
     const ctx = this.ctx
     ctx.body = await ctx.model.User.findAll()

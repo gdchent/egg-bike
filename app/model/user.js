@@ -17,6 +17,10 @@ module.exports = app => {
     }
   })
 
+  User.associate = function () {
+    app.model.User.hasMany(app.model.Article, { foreignKey: 'userId', targetKey: 'Id' })
+  }
+
   // 查询指定用户
   User.getUser = async function (params) {
     let user = await this.findOne({

@@ -2,9 +2,15 @@
 
 module.exports = app => {
   const { router, controller } = app
-  router.get('/', controller.home.index)
+  // All
   router.post('/login', controller.user.login)
-  router.get('/user', controller.user.index)
   router.get('/auth', app.middlewares.ifUser(), controller.user.auth)
-  router.get('/article', controller.article.index)
+
+  // User
+  router.get('/user', controller.user.index)
+
+  // Article
+  router.get('/article/title', controller.article.findArticleByTitle)
+  router.resources('article', '/article', controller.article)
+  // router.get('/article', controller.article.index)
 }
