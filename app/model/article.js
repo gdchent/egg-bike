@@ -1,5 +1,5 @@
 module.exports = app => {
-  const { STRING, INTEGER, TEXT, DATE } = app.Sequelize
+  const { STRING, INTEGER, TEXT, DATE, fn, col } = app.Sequelize
 
   const Article = app.model.define('article', {
     Id: {
@@ -56,11 +56,77 @@ module.exports = app => {
     return article
   }
 
-  // 根据 title 查询文章
-  Article.getArticleByTitle = async function ({ q, type = 'article' }) {
-
+  // 根据 title 查询文章 TODO: 改成分页
+  Article.getArticlesByTitle = async function ({ q }) {
     let articles = await this.findAll({
       where: { title: q }
+    })
+    return articles
+  }
+
+  // 根据 time排序 查询文章 list
+  Article.getArticlesByTime = async function ({ currPage = 1, size = 10 }) {
+    let offset = (currPage - 1) * size
+    let articles = await this.findAll({
+      limit: size,
+      offset,
+      include: {
+        model: app.model.User,
+        as: 'author',
+        attributes: {
+          exclude: ['password']
+        }
+      },
+      order: [
+        ['time', 'DESC']
+      ],
+      // FIXME: 联表的话就会出现错误的聚合，安装mysql5.7吧
+      attributes: [
+        [fn('MAX', col('Article.Id')), 'total']
+      ]
+    })
+    return articles
+  }
+
+  // 根据 view排序 查询文章 list
+  Article.getArticlesByView = async function ({ currPage = 1, size = 10 }) {
+    let offset = (currPage - 1) * size
+    let articles = await this.findAll({
+      limit: size,
+      offset,
+      include: {
+        model: app.model.User,
+        as: 'author',
+        attributes: {
+          exclude: ['password']
+        }
+      },
+      order: [
+        ['view', 'DESC']
+      ]
+    })
+    return articles
+  }
+
+  // 通过category id获取文章list
+  Article.getArticlesByCId = async function ({ cid = 4, currPage = 1, size = 10 }) {
+    let offset = (currPage - 1) * size
+    let articles = await this.findAll({
+      limit: size,
+      offset,
+      where: {
+        category: cid
+      },
+      include: {
+        model: app.model.User,
+        as: 'author',
+        attributes: {
+          exclude: ['password']
+        }
+      },
+      order: [
+        ['time', 'DESC']
+      ]
     })
     return articles
   }

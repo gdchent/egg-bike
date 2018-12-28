@@ -1,5 +1,5 @@
 module.exports = app => {
-  const { STRING, INTEGER } = app.Sequelize
+  const { STRING, INTEGER, Op } = app.Sequelize
 
   const User = app.model.define('user', {
     Id: {
@@ -28,6 +28,23 @@ module.exports = app => {
     })
 
     return user
+  }
+
+  // 查询模糊用户 TODO: 改成分页
+  User.getUsersByName = async function ({ q }) {
+    let reg = q.split('').join('|')
+
+    let users = await this.findAll({
+      where: {
+        username: {
+          [Op.regexp]: reg
+        }
+      },
+      attributes: {
+        exclude: ['password']
+      }
+    })
+    return users
   }
 
   return User

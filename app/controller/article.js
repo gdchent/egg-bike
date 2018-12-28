@@ -16,10 +16,21 @@ class ArticleController extends Controller {
   }
 
   // TODO: 根据文章名模糊搜索文章
-  async findArticleByTitle () {
+  async getArticlesByTitle () {
     const ctx = this.ctx
-    console.log(ctx.query)
-    ctx.body = await ctx.model.Article.getArticleByTitle({ q: ctx.query.q })
+    ctx.body = await ctx.model.Article.getArticlesByTitle({ q: ctx.query.q })
+  }
+
+  // 最新文章
+  async getArticlesByTime () {
+    const ctx = this.ctx
+    ctx.body = await ctx.model.Article.getArticlesByTime(ctx.query)
+  }
+
+  // 最火文章
+  async getArticlesByView () {
+    const ctx = this.ctx
+    ctx.body = await ctx.model.Article.getArticlesByView(ctx.query)
   }
 
   // 增加一篇文章
