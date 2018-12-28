@@ -7,7 +7,7 @@ module.exports = appInfo => {
   config.keys = appInfo.name + '_cheese'
 
   // add your config here
-  config.middleware = []
+  config.middleware = ['qs']
 
   // sequelize
   config.sequelize = {
@@ -26,7 +26,7 @@ module.exports = appInfo => {
   config.jwt = {
     enable: true,
     secret: 'cheesekun',
-    ignore: ['/login', '/user', '/article', '/admin/login']
+    ignore: ['/login', '/user', '/article', '/admin/login', '/category', '/search']
   }
 
   // web csrf 安全配置
