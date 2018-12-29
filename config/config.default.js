@@ -23,10 +23,12 @@ module.exports = appInfo => {
   }
 
   // jwt
+  // 暂时性不拦截路由
+  const arr = ['/upload']
   config.jwt = {
     enable: true,
     secret: 'cheesekun',
-    ignore: ['/login', '/user', '/article', '/admin/login', '/category', '/search']
+    ignore: ['/login', '/user', '/article', '/admin/login', '/category', '/search', ...arr]
   }
 
   // web csrf 安全配置

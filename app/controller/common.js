@@ -4,12 +4,6 @@
 const Controller = require('egg').Controller
 
 class CommonController extends Controller {
-  // 获取到所有用户
-  async index () {
-    const ctx = this.ctx
-    ctx.body = await ctx.model.Common.findAll()
-  }
-
   // 模糊搜索
   async search () {
     const ctx = this.ctx
@@ -26,6 +20,8 @@ class CommonController extends Controller {
     }
     ctx.body = res
   }
+
+  // TODO: 首页文章list, 这样子的话，文章又要联立用户又要联立adata表
 }
 
 module.exports = CommonController
