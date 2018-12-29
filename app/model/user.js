@@ -14,6 +14,30 @@ module.exports = app => {
     password: {
       type: STRING,
       allowNull: true
+    },
+    avatar: {
+      type: STRING,
+      allowNull: false
+    },
+    sex: {
+      type: INTEGER(1),
+      allowNull: false
+    },
+    introduction: {
+      type: STRING,
+      allowNull: false
+    },
+    blog: {
+      type: STRING,
+      allowNull: true
+    },
+    github: {
+      type: STRING,
+      allowNull: true
+    },
+    wechat: {
+      type: STRING,
+      allowNull: true
     }
   })
 
