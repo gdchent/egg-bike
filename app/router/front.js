@@ -24,4 +24,8 @@ module.exports = app => {
 
   // search
   router.get('/search', controller.common.search)
+
+  // upload
+  router.post('/upload/avatar', controller.upload.avatarImgUpload)
+  router.post('/upload/article-img', controller.upload.articleImgUpload)
 }

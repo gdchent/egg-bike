@@ -9,11 +9,11 @@ module.exports = app => {
     },
     userId: {
       type: INTEGER(11),
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
+      allowNull: false
+      // references: {
+      //   model: 'User',
+      //   key: 'id'
+      // }
     },
     content: {
       type: TEXT,
@@ -33,11 +33,12 @@ module.exports = app => {
     },
     view: {
       type: INTEGER(11),
-      allowNull: false
+      allowNull: true
     }
   })
 
   Article.associate = function () {
+    app.model.Article.hasOne(app.model.Adata, { as: 'gather', foreignKey: 'Id' })
     app.model.Article.belongsTo(app.model.User, { as: 'author', foreignKey: 'userId', targetKey: 'Id' })
   }
 
@@ -45,13 +46,22 @@ module.exports = app => {
   Article.getArticle = async function (params) {
     let article = await this.findOne({
       where: params,
-      include: {
-        model: app.model.User,
-        as: 'author',
-        attributes: {
-          exclude: ['password']
+      include: [
+        {
+          model: app.model.User,
+          as: 'author',
+          attributes: {
+            exclude: ['password']
+          }
+        },
+        {
+          model: app.model.Adata,
+          as: 'gather',
+          attributes: {
+            exclude: ['Id', 'aId']
+          }
         }
-      }
+      ]
     })
     return article
   }
@@ -70,20 +80,32 @@ module.exports = app => {
     let articles = await this.findAll({
       limit: size,
       offset,
-      include: {
-        model: app.model.User,
-        as: 'author',
-        attributes: {
-          exclude: ['password']
-        }
+      attributes: {
+        exclude: ['content']
       },
+      include: [
+        {
+          model: app.model.User,
+          as: 'author',
+          attributes: {
+            exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+          }
+        },
+        {
+          model: app.model.Adata,
+          as: 'gather',
+          attributes: {
+            exclude: ['Id', 'aId']
+          }
+        }
+      ],
       order: [
         ['time', 'DESC']
-      ],
-      // FIXME: 联表的话就会出现错误的聚合，安装mysql5.7吧
-      attributes: [
-        [fn('MAX', col('Article.Id')), 'total']
       ]
+      // FIXME: 联表的话就会出现错误的聚合，安装mysql5.7吧
+      // attributes: [
+      //   [fn('MAX', col('Article.Id')), 'total']
+      // ]
     })
     return articles
   }
