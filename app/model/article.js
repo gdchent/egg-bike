@@ -34,6 +34,14 @@ module.exports = app => {
     view: {
       type: INTEGER(11),
       allowNull: true
+    },
+    digest: {
+      type: STRING,
+      allowNull: false
+    },
+    himg: {
+      type: STRING,
+      allowNull: false
     }
   })
 
@@ -81,7 +89,7 @@ module.exports = app => {
       limit: size,
       offset,
       attributes: {
-        exclude: ['content']
+        exclude: ['content', 'userId']
       },
       include: [
         {
