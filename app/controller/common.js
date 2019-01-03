@@ -18,7 +18,12 @@ class CommonController extends Controller {
         res = await ctx.model.User.getUsersByName({ q: ctx.query.q })
         break
     }
-    ctx.body = res
+    if (!res) {
+      type === 'article' ? ctx.help.error(ctx, -1, '查无该文章')
+        : ctx.help.error(ctx, -1, '查无该用户')
+    } else {
+      ctx.helper.success(ctx, res)
+    }
   }
 
   // TODO: 首页文章list, 这样子的话，文章又要联立用户又要联立adata表

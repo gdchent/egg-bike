@@ -46,11 +46,25 @@ module.exports = app => {
   }
 
   // 查询指定用户
-  User.getUser = async function (params) {
+  User.getUserById = async function (id) {
     let user = await this.findOne({
-      where: params
+      where: {
+        id
+      },
+      attributes: {
+        exclude: ['password']
+      }
     })
+    return user
+  }
 
+  // 查询指定用户: 仅用于后台查询，毕竟携带了密码
+  User.getUserByName = async function (username) {
+    let user = await this.findOne({
+      where: {
+        username
+      }
+    })
     return user
   }
 

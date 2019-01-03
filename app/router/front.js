@@ -8,7 +8,8 @@ module.exports = app => {
   router.get('/auth', app.middlewares.ifUser(), controller.user.auth)
 
   // User
-  router.get('/user', controller.user.index)
+  router.get('/user', controller.user.getMe)
+  router.get('/user/:id', controller.user.getUserById)
 
   // Article
   // TODO: 根据 title 获取文章(模糊搜索) FIXME: 其实可以删除，已经放到搜索路由上了

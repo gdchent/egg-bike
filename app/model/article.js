@@ -51,7 +51,7 @@ module.exports = app => {
   }
 
   // 根据 id 查询指定文章
-  Article.getArticle = async function (params) {
+  Article.getArticleById = async function (params) {
     let article = await this.findOne({
       where: params,
       include: [

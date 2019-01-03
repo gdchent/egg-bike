@@ -12,7 +12,12 @@ class ArticleController extends Controller {
   // 根据id查找一篇文章 改成 根据文章名模糊搜索文章
   async show () {
     const ctx = this.ctx
-    ctx.body = await ctx.model.Article.getArticle({ id: ctx.params.id })
+    let res = await ctx.model.Article.getArticleById({ id: ctx.params.id })
+    if (!res) {
+      ctx.helper.error(ctx, -1, '该文章不存在')
+    } else {
+      ctx.helper.success(ctx, res)
+    }
   }
 
   // TODO: 根据文章名模糊搜索文章
