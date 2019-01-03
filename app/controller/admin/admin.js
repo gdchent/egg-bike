@@ -15,7 +15,7 @@ class AdminController extends Controller {
     if (password !== user.password) {
       ctx.helper.error(ctx, -1, '密码错误')
     } else {
-      let token = await ctx.service.token.createToken({ role: 'admin' })
+      let token = await ctx.service.token.createToken({ role: 'admin', id: user.Id })
       ctx.helper.success(ctx, { token })
     }
   }

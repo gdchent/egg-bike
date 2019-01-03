@@ -7,7 +7,7 @@ exports.getAccessToken = ctx => {
 // 校验 Token
 exports.verifyToken = async (ctx, userId) => {
   let token = this.getAccessToken(ctx)
-  let verifyResult = await ctx.service.user.verifyToken(token)
+  let verifyResult = await ctx.service.token.verifyToken(token)
   if (!verifyResult.verify) {
     ctx.helper.error(ctx, 401, verifyResult.message)
     return false
