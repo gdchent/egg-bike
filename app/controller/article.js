@@ -17,6 +17,8 @@ class ArticleController extends Controller {
       ctx.helper.error(ctx, -1, '该文章不存在')
     } else {
       ctx.helper.success(ctx, res)
+      // 将view + 1, 放下面不阻塞
+      ctx.model.Article.updateView(res.Id, res.view + 1)
     }
   }
 

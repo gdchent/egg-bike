@@ -74,6 +74,15 @@ module.exports = app => {
     return article
   }
 
+  // 文章view值 +1
+  Article.updateView = async function (Id, view) {
+    let res = await this.update(
+      { view },
+      { where: { Id } }
+    )
+    return res
+  }
+
   // 根据 title 查询文章 TODO: 改成分页
   Article.getArticlesByTitle = async function ({ q }) {
     let articles = await this.findAll({
