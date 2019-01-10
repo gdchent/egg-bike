@@ -4,6 +4,7 @@ module.exports = app => {
   const { router, controller } = app
   // All
   router.post('/login', controller.user.login)
+  router.post('/register', controller.user.register)
 
   router.get('/auth', app.middlewares.ifUser(), controller.user.auth)
 
@@ -22,6 +23,11 @@ module.exports = app => {
   // Category
   router.get('/category', controller.category.index)
   router.get('/category/:id', controller.category.getArticlesByCId)
+
+  // Like
+  router.get('/like', controller.like.isLike)
+  router.post('/like', controller.like.createLike)
+  router.delete('/like', controller.like.destroyLike)
 
   // search
   router.get('/search', controller.common.search)

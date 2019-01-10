@@ -17,15 +17,15 @@ module.exports = app => {
     },
     avatar: {
       type: STRING,
-      allowNull: false
+      allowNull: true
     },
     sex: {
       type: INTEGER(1),
-      allowNull: false
+      allowNull: true
     },
     introduction: {
       type: STRING,
-      allowNull: false
+      allowNull: true
     },
     blog: {
       type: STRING,
@@ -36,6 +36,10 @@ module.exports = app => {
       allowNull: true
     },
     wechat: {
+      type: STRING,
+      allowNull: true
+    },
+    phone: {
       type: STRING,
       allowNull: true
     }

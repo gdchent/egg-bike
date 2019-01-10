@@ -6,7 +6,7 @@ module.exports = options => {
     let q = ctx.query
     Object.keys(q).forEach(k => {
       if (!Number.isNaN(Number.parseInt(q[k]))) {
-        q[k] = Number.parseInt(k)
+        q[k] = Number.parseInt(q[k])
       }
     })
     await next()
