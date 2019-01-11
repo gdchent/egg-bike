@@ -46,7 +46,9 @@ module.exports = app => {
   })
 
   User.associate = function () {
-    app.model.User.hasMany(app.model.Article, { foreignKey: 'userId', targetKey: 'Id' })
+    this.hasMany(app.model.Article, { foreignKey: 'userId', targetKey: 'Id' })
+    this.hasMany(app.model.Follow, { foreignKey: 'fId', targetKey: 'Id' })
+    this.hasMany(app.model.Follow, { foreignKey: 'uId', targetKey: 'Id' })
   }
 
   // 查询指定用户
@@ -62,7 +64,7 @@ module.exports = app => {
     return user
   }
 
-  // 查询指定用户: 仅用于后台查询，毕竟携带了密码
+  // FIXME: 查询指定用户: 仅用于后台查询，毕竟携带了密码
   User.getUserByName = async function (username) {
     let user = await this.findOne({
       where: {

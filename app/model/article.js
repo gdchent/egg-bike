@@ -46,8 +46,8 @@ module.exports = app => {
   })
 
   Article.associate = function () {
-    app.model.Article.hasOne(app.model.Adata, { as: 'gather', foreignKey: 'Id' })
-    app.model.Article.belongsTo(app.model.User, { as: 'author', foreignKey: 'userId', targetKey: 'Id' })
+    this.hasOne(app.model.Adata, { as: 'gather', foreignKey: 'Id' })
+    this.belongsTo(app.model.User, { as: 'author', foreignKey: 'userId', targetKey: 'Id' })
   }
 
   // 根据 id 查询指定文章

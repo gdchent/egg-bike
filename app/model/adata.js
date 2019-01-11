@@ -27,7 +27,7 @@ module.exports = app => {
 
   Adata.associate = function () {
     // app.model.Adata.hasOne(app.model.Article, { foreignKey: 'aId' })
-    app.model.Adata.belongsTo(app.model.Article, { foreignKey: 'aId', target: 'Id' })
+    this.belongsTo(app.model.Article, { foreignKey: 'aId', target: 'Id' })
   }
 
   // 升级数据
