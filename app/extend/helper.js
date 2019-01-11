@@ -4,6 +4,13 @@ exports.getAccessToken = ctx => {
   return bearerToken && bearerToken.replace('Bearer ', '')
 }
 
+// 解析token
+exports.parseToken = async (ctx) => {
+  let token = this.getAccessToken(ctx)
+  let verifyResult = await ctx.service.token.verifyToken(token)
+  return verifyResult.message
+}
+
 // 校验 Token
 exports.verifyToken = async (ctx, userId) => {
   let token = this.getAccessToken(ctx)

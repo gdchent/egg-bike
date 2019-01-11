@@ -10,7 +10,7 @@ class CategoryController extends Controller {
     if (!res) {
       ctx.helper.error(ctx, -1, '应该是后台出问题了')
     } else {
-      ctx.hellp.success(ctx, res)
+      ctx.helper.success(ctx, res)
     }
   }
 
@@ -25,7 +25,7 @@ class CategoryController extends Controller {
     if (!res) {
       ctx.helper.error(ctx, -1, '查询失败')
     } else {
-      ctx.hellp.success(ctx, res)
+      ctx.helper.success(ctx, res)
     }
   }
 }
