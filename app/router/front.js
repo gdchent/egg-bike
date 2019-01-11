@@ -10,7 +10,13 @@ module.exports = app => {
 
   // User
   router.get('/user', controller.user.getMe)
+  router.get('/user/following', controller.user.getFollowingsByUId)
   router.get('/user/:id', controller.user.getUserById)
+  // FIXME: 获取关注数并不需要暴露出来，service统和
+  router.get('/user/:uId/following', controller.user.getFollowingCountByUId)
+  router.get('/user/follow/:fId', controller.user.isFollow)
+  router.post('/user/follow', controller.user.createFollow)
+  router.delete('/user/follow', controller.user.destroyFollow)
 
   // Article
   // TODO: 根据 title 获取文章(模糊搜索) FIXME: 其实可以删除，已经放到搜索路由上了

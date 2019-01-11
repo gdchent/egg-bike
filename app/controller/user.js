@@ -4,7 +4,7 @@ const Controller = require('egg').Controller
 const bcrypt = require('bcryptjs')
 
 class UserController extends Controller {
-  // 获取自己
+  // FIXME: 获取自己(其实并不需要验证token，这个api调用前就先验证token了)
   async getMe () {
     const ctx = this.ctx
     let token = ctx.helper.getAccessToken(ctx)
@@ -68,6 +68,61 @@ class UserController extends Controller {
     } else {
       ctx.hellp.success(ctx, user)
     }
+  }
+
+  /**
+   * 关注关系
+  */
+  async isFollow () {
+    const ctx = this.ctx
+    const fId = ctx.params.fId
+    let token = await ctx.helper.parseToken(ctx)
+    let uId = token.id
+    let res = await ctx.model.Follow.isFollow({ fId, uId })
+    if (res) {
+      ctx.helper.success(ctx, { isFollow: true })
+    } else {
+      ctx.helper.success(ctx, { isFollow: false })
+    }
+  }
+
+  // FIXME: 这两个只是关注数，在service统合就行了
+  async getFollowingCountByUId () {
+    const ctx = this.ctx
+    const uId = ctx.params.uId
+    let res = await ctx.model.Follow.getFollowingCountByUId(uId)
+    ctx.helper.success(ctx, res)
+  }
+
+  async getFollowerCountByFId () {
+    const ctx = this.ctx
+    const fId = ctx.params.fId
+    let res = await ctx.model.Follow.getFollowerCountByFId(fId)
+    ctx.helper.success(ctx, res)
+  }
+
+  async getFollowingsByUId () {
+    const ctx = this.ctx
+    let token = await ctx.helper.parseToken(ctx)
+    let uId = token.id
+    let res = await ctx.model.Follow.getFollowingsByUId(uId)
+    ctx.helper.success(ctx, res)
+  }
+
+  async createFollow () {
+    const ctx = this.ctx
+    let token = await ctx.helper.parseToken(ctx)
+    let uId = token.id
+    let res = await ctx.model.Follow.createFollow({ ...ctx.request.body, uId })
+    ctx.helper.success(ctx, res)
+  }
+
+  async destroyFollow () {
+    const ctx = this.ctx
+    let token = await ctx.helper.parseToken(ctx)
+    let uId = token.id
+    let res = await ctx.model.Follow.destroyFollow({ ...ctx.request.body, uId })
+    ctx.helper.success(ctx, res)
   }
 
   async auth () {
