@@ -1,7 +1,7 @@
 module.exports = app => {
   const { INTEGER } = app.Sequelize
 
-  const Collection = app.model.define('Collection', {
+  const Collection = app.model.define('collection', {
     Id: {
       type: INTEGER(11),
       primaryKey: true,

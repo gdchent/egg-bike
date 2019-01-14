@@ -1,7 +1,7 @@
 module.exports = app => {
   const { INTEGER, DATE } = app.Sequelize
 
-  const Like = app.model.define('Like', {
+  const Like = app.model.define('like', {
     Id: {
       type: INTEGER(11),
       primaryKey: true,

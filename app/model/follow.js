@@ -1,7 +1,7 @@
 module.exports = app => {
   const { INTEGER, fn, col } = app.Sequelize
 
-  const Follow = app.model.define('Follow', {
+  const Follow = app.model.define('follow', {
     Id: {
       type: INTEGER(11),
       primaryKey: true,
@@ -52,7 +52,29 @@ module.exports = app => {
       include: [
         {
           model: app.model.User,
-          as: 'info',
+          as: 'fInfo',
+          attributes: {
+            exclude: ['password']
+          }
+        }
+      ],
+      attributes: {
+        exclude: ['Id', 'uId', 'fId']
+      }
+    })
+    return follows
+  }
+
+  // 我的粉丝
+  Follow.getFollowersByFId = async function (fId) {
+    let follows = await this.findAll({
+      where: {
+        fId
+      },
+      include: [
+        {
+          model: app.model.User,
+          as: 'uInfo',
           attributes: {
             exclude: ['password']
           }

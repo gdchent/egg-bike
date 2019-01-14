@@ -1,7 +1,7 @@
 // ctx.query number类型处理
 
 module.exports = options => {
-  return async function ifAdmin (ctx, next) {
+  return async function (ctx, next) {
     if (!ctx.query) await next()
     let q = ctx.query
     Object.keys(q).forEach(k => {
