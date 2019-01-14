@@ -66,6 +66,37 @@ class ArticleController extends Controller {
       ctx.helper.success(ctx, article)
     }
   }
+
+  /**
+   * 文章评论
+  */
+  // 获取评论
+  async getCommentsByAId () {
+    const ctx = this.ctx
+    let aId = ctx.params.aId
+    let res = await ctx.model.Comment.getCommentsByAId(aId)
+    ctx.helper.success(ctx, res)
+  }
+
+  // 添加一条评论
+  async createComment () {
+    const ctx = this.ctx
+    let aId = ctx.params.aId
+    ctx.body = await ctx.model.Comment.create({ aId, ...ctx.request.body })
+  }
+
+  // 添加一条回复
+  async createReply () {
+    const ctx = this.ctx
+    let cId = ctx.params.cId
+    let res = await ctx.model.Reply.createReply({ cId, ...ctx.request.body })
+    ctx.helper.success(ctx, res)
+  }
+
+  // FIXME: 删除评论（看情况做不做吧）
+  async destroyComment () {
+
+  }
 }
 
 module.exports = ArticleController

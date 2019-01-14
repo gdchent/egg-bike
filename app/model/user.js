@@ -47,8 +47,11 @@ module.exports = app => {
 
   User.associate = function () {
     this.hasMany(app.model.Article, { foreignKey: 'userId', targetKey: 'Id' })
-    this.hasMany(app.model.Follow, { foreignKey: 'fId', targetKey: 'Id' })
-    this.hasMany(app.model.Follow, { foreignKey: 'uId', targetKey: 'Id' })
+    this.hasMany(app.model.Comment, { as: 'user', foreignKey: 'uId', targetKey: 'Id' })
+    this.hasMany(app.model.Reply, { as: 'fUser', foreignKey: 'fromId', targetKey: 'Id' })
+    this.hasMany(app.model.Reply, { as: 'tUser', foreignKey: 'toId', targetKey: 'Id' })
+    this.hasMany(app.model.Follow, { as: 'fInfo', foreignKey: 'fId', targetKey: 'Id' })
+    this.hasMany(app.model.Follow, { as: 'uInfo', foreignKey: 'uId', targetKey: 'Id' })
   }
 
   // 查询指定用户

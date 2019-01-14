@@ -10,7 +10,9 @@ module.exports = app => {
 
   // User
   router.get('/user', controller.user.getMe)
+  // FIXME: 这块数据结构太恶心了，看能不能改掉
   router.get('/user/following', controller.user.getFollowingsByUId)
+  router.get('/user/follower', controller.user.getFollowersByFId)
   router.get('/user/:id', controller.user.getUserById)
   // FIXME: 获取关注数并不需要暴露出来，service统和
   router.get('/user/:uId/following', controller.user.getFollowingCountByUId)
@@ -24,7 +26,13 @@ module.exports = app => {
   router.get('/article/latest', controller.article.getArticlesByTime)
   router.get('/article/hottest', controller.article.getArticlesByView)
   router.resources('article', '/article', controller.article)
-  // router.get('/article', controller.article.index)
+
+  // Comment
+  router.get('/article/:aId/comments', controller.article.getCommentsByAId)
+  router.post('/article/:aId/comment', controller.article.createComment)
+
+  // Reply
+  router.post('/comment/:cId/reply', controller.article.createReply)
 
   // Category
   router.get('/category', controller.category.index)

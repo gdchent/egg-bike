@@ -101,11 +101,21 @@ class UserController extends Controller {
     ctx.helper.success(ctx, res)
   }
 
+  // 获取关注列表
   async getFollowingsByUId () {
     const ctx = this.ctx
     let token = await ctx.helper.parseToken(ctx)
     let uId = token.id
     let res = await ctx.model.Follow.getFollowingsByUId(uId)
+    ctx.helper.success(ctx, res)
+  }
+
+  // 获取粉丝列表
+  async getFollowersByFId () {
+    const ctx = this.ctx
+    let token = await ctx.helper.parseToken(ctx)
+    let fId = token.id
+    let res = await ctx.model.Follow.getFollowersByFId(fId)
     ctx.helper.success(ctx, res)
   }
 
