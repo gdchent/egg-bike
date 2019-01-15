@@ -23,9 +23,9 @@ class UploadController extends Controller {
       await sendToWormhole(stream)
       throw err
     }
-    ctx.body = {
+    ctx.helper.success(ctx, {
       url: '/public/upload/avatarImgs/' + filename
-    }
+    })
   }
 
   // TODO: 文章图片上传，可以一个文章id一个文件夹，如：articleImgs/:id/..
@@ -42,9 +42,9 @@ class UploadController extends Controller {
       await sendToWormhole(stream)
       throw err
     }
-    ctx.body = {
+    ctx.helper.success(ctx, {
       url: '/public/upload/articleImgs/' + filename
-    }
+    })
   }
 }
 

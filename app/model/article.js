@@ -156,12 +156,24 @@ module.exports = app => {
       where: {
         category: cid
       },
-      include: {
-        model: app.model.User,
-        as: 'author',
-        attributes: {
-          exclude: ['password']
+      include: [
+        {
+          model: app.model.User,
+          as: 'author',
+          attributes: {
+            exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+          }
+        },
+        {
+          model: app.model.Adata,
+          as: 'gather',
+          attributes: {
+            exclude: ['Id', 'aId']
+          }
         }
+      ],
+      attributes: {
+        exclude: ['content', 'userId']
       },
       order: [
         ['time', 'DESC']

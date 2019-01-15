@@ -82,7 +82,10 @@ class ArticleController extends Controller {
   async createComment () {
     const ctx = this.ctx
     let aId = ctx.params.aId
-    ctx.body = await ctx.model.Comment.create({ aId, ...ctx.request.body })
+    let token = await ctx.helper.parseToken(ctx)
+    let uId = token.id
+    let res = await ctx.model.Comment.create({ aId, uId, ...ctx.request.body })
+    ctx.helper.success(ctx, res)
   }
 
   // 添加一条回复

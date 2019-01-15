@@ -17,7 +17,7 @@ class CategoryController extends Controller {
   // 根据分类id获取到对应的文章list，分页
   async getArticlesByCId () {
     const ctx = this.ctx
-    let cid = ctx.params.cid
+    let cid = ctx.params.cId
     let res = await ctx.model.Article.getArticlesByCId({
       cid,
       ...ctx.query
