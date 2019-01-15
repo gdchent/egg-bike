@@ -94,5 +94,17 @@ module.exports = app => {
     return users
   }
 
+  // 更新个人资料
+  User.updateMyInfo = async function (Id, body) {
+    let res = await this.update({
+      ...body
+    }, {
+      where: {
+        Id
+      }
+    })
+    return res
+  }
+
   return User
 }

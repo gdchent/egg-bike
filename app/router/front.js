@@ -10,6 +10,8 @@ module.exports = app => {
 
   // User
   router.get('/user', controller.user.getMe)
+  router.put('/user', controller.user.updateMyInfo)
+
   // FIXME: 这块数据结构太恶心了，看能不能改掉
   router.get('/user/following', controller.user.getFollowingsByUId)
   router.get('/user/follower', controller.user.getFollowersByFId)
@@ -36,7 +38,7 @@ module.exports = app => {
 
   // Category
   router.get('/category', controller.category.index)
-  router.get('/category/:id', controller.category.getArticlesByCId)
+  router.get('/category/:cId', controller.category.getArticlesByCId)
 
   // Like
   router.get('/like', controller.like.isLike)

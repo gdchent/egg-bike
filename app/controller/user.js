@@ -70,6 +70,20 @@ class UserController extends Controller {
     }
   }
 
+  // 更新个人资料
+  async updateMyInfo () {
+    const ctx = this.ctx
+    let token = await ctx.helper.parseToken(ctx)
+    let Id = token.id
+
+    let res = await ctx.model.User.updateMyInfo(Id, ctx.request.body)
+    if (res) {
+      ctx.helper.success(ctx, res)
+    } else {
+      ctx.helper.error(ctx, -1, '信息更新失败')
+    }
+  }
+
   /**
    * 关注关系
   */
