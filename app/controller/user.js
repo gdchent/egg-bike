@@ -52,7 +52,7 @@ class UserController extends Controller {
         password: hash
       })
       if (res) {
-        ctx.helper.success(ctx, {})
+        ctx.helper.success(ctx, { msg: '注册成功' })
       } else {
         ctx.helper.error(ctx, -1, '注册失败')
       }

@@ -1,3 +1,5 @@
+const cheerio = require('cheerio')
+
 module.exports = app => {
   const { STRING, INTEGER, TEXT, DATE, fn, col } = app.Sequelize
 
@@ -10,10 +12,6 @@ module.exports = app => {
     userId: {
       type: INTEGER(11),
       allowNull: false
-      // references: {
-      //   model: 'User',
-      //   key: 'id'
-      // }
     },
     content: {
       type: TEXT,
@@ -21,7 +19,7 @@ module.exports = app => {
     },
     title: {
       type: STRING,
-      allowNull: true
+      allowNull: false
     },
     time: {
       type: DATE,
@@ -41,12 +39,12 @@ module.exports = app => {
     },
     himg: {
       type: STRING,
-      allowNull: false
+      allowNull: true
     }
   })
 
   Article.associate = function () {
-    this.hasOne(app.model.Adata, { as: 'gather', foreignKey: 'Id' })
+    this.hasOne(app.model.Adata, { as: 'gather', foreignKey: 'aId' })
     this.belongsTo(app.model.User, { as: 'author', foreignKey: 'userId', targetKey: 'Id' })
   }
 
@@ -182,9 +180,17 @@ module.exports = app => {
     return articles
   }
 
-  // 增加一篇文章
-  Article.createArticle = async function (body) {
-    let res = await this.create(body)
+  // 增加一篇文章, FIXME: 规范来说，应该拆到service，
+  Article.createArticle = async function ({ uId, ...body }) {
+    let $ = cheerio.load(body.content)
+    let digest = $.text().substr(0, 74) + '...'
+    let time = new Date()
+    let res = await this.create({
+      userId: uId,
+      time,
+      digest,
+      ...body
+    })
     return res
   }
 

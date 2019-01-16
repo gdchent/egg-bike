@@ -48,11 +48,17 @@ module.exports = appInfo => {
       // ctx.body = JSON.stringify(err)
       switch (err.status) {
         case 401:
-        case 500:
           ctx.body = JSON.stringify({
-            code: 0,
+            code: -2,
             msg: err.message
           })
+          break
+        case 500:
+          ctx.body = JSON.stringify({
+            code: -1,
+            msg: err.message
+          })
+          break
       }
     }
   }

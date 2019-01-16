@@ -13,15 +13,15 @@ module.exports = app => {
     },
     commentCount: {
       type: INTEGER(11),
-      allowNull: false
+      allowNull: true
     },
     likeCount: {
       type: INTEGER(11),
-      allowNull: false
+      allowNull: true
     },
     collectionCount: {
       type: INTEGER(11),
-      allowNull: false
+      allowNull: true
     }
   })
 
