@@ -31,7 +31,12 @@ class ArticleController extends Controller {
   // 最新文章
   async getArticlesByTime () {
     const ctx = this.ctx
-    ctx.body = await ctx.model.Article.getArticlesByTime(ctx.query)
+    let res = await ctx.model.Article.getArticlesByTime(ctx.query)
+    if (res) {
+      ctx.helper.success(ctx, res)
+    } else {
+      ctx.helper.error(ctx, -1, '最新文章获取失败')
+    }
   }
 
   // 最火文章
@@ -43,7 +48,18 @@ class ArticleController extends Controller {
   // 增加一篇文章
   async create () {
     const ctx = this.ctx
-    ctx.body = await ctx.model.Article.createArticle(ctx.request.body)
+    let token = await ctx.helper.parseToken(ctx)
+    let uId = token.id
+    let res = await ctx.service.article.createArticle({
+      uId,
+      ...ctx.request.body
+    })
+    if (res) {
+      ctx.helper.success(ctx, res)
+    } else {
+      ctx.helper.error(ctx, -1, '文章发布失败')
+    }
+    // ctx.body = await ctx.model.Article.createArticle(ctx.request.body)
   }
 
   // 删除一篇文章（文章必须为作者所有才可删）
