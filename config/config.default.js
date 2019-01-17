@@ -41,6 +41,23 @@ module.exports = appInfo => {
     }
   }
 
+  // socket.io 配置
+  config.io = {
+    init: { }, // passed to engine.io
+    namespace: {
+      '/': {
+        connectionMiddleware: [
+          'connection'
+        ],
+        packetMiddleware: []
+      },
+      '/example': {
+        connectionMiddleware: [],
+        packetMiddleware: []
+      }
+    }
+  }
+
   // 错误处理
   config.onerror = {
     all (err, ctx) {
