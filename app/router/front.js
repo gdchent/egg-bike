@@ -49,6 +49,5 @@ module.exports = app => {
   router.get('/search', controller.common.search)
 
   // upload
-  router.post('/upload/avatar', controller.upload.avatarImgUpload)
-  router.post('/upload/article-img', controller.upload.articleImgUpload)
+  router.post('/upload/img/:type', controller.upload.imgUpload)
 }
