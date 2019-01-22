@@ -26,7 +26,8 @@ module.exports = app => {
   // TODO: 根据 title 获取文章(模糊搜索) FIXME: 其实可以删除，已经放到搜索路由上了
   router.get('/article/title', controller.article.getArticlesByTitle)
   router.get('/article/latest', controller.article.getArticlesByTime)
-  router.get('/article/hottest', controller.article.getArticlesByView)
+  router.get('/article/hottest', controller.article.getArticlesByLike)
+  router.get('/article/user/:id', controller.article.getArticlesByUId)
   router.resources('article', '/article', controller.article)
 
   // Comment

@@ -28,6 +28,21 @@ class ArticleController extends Controller {
     ctx.body = await ctx.model.Article.getArticlesByTitle({ q: ctx.query.q })
   }
 
+  // TODO: 根据uid获取文章
+  async getArticlesByUId () {
+    const ctx = this.ctx
+    let uId = ctx.params.id
+    let res = await ctx.model.Article.getArticlesByUId({
+      uId,
+      ...ctx.query
+    })
+    if (res) {
+      ctx.helper.success(ctx, res)
+    } else {
+      ctx.helper.error(ctx, -1, '用户文章获取失败')
+    }
+  }
+
   // 最新文章
   async getArticlesByTime () {
     const ctx = this.ctx
@@ -40,9 +55,14 @@ class ArticleController extends Controller {
   }
 
   // 最火文章
-  async getArticlesByView () {
+  async getArticlesByLike () {
     const ctx = this.ctx
-    ctx.body = await ctx.model.Article.getArticlesByView(ctx.query)
+    let res = await ctx.model.Article.getArticlesByLike(ctx.query)
+    if (res) {
+      ctx.helper.success(ctx, res)
+    } else {
+      ctx.helper.error(ctx, -1, '最新文章获取失败')
+    }
   }
 
   // 增加一篇文章

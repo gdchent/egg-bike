@@ -16,7 +16,7 @@ class UserController extends Controller {
       return false
     }
     let id = verifyResult.message.id
-    let user = await ctx.model.User.getUserById(id)
+    let user = await ctx.service.user.getUserById(id)
     ctx.helper.success(ctx, user)
   }
 
@@ -62,11 +62,11 @@ class UserController extends Controller {
   async getUserById () {
     const ctx = this.ctx
     const id = ctx.params.id
-    let user = await ctx.model.User.getUserById(id)
+    let user = await ctx.service.user.getUserById(id)
     if (!user) {
       ctx.helper.error(ctx, -1, '该账户不存在')
     } else {
-      ctx.hellp.success(ctx, user)
+      ctx.helper.success(ctx, user)
     }
   }
 

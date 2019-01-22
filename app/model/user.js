@@ -64,6 +64,7 @@ module.exports = app => {
         exclude: ['password']
       }
     })
+
     return user
   }
 
