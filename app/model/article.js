@@ -72,6 +72,48 @@ module.exports = app => {
     return article
   }
 
+  // 根据 userId 获取文章list
+  Article.getArticlesByUId = async function ({ uId, current = 1, size = 5 }) {
+    let offset = (current - 1) * size
+    let total = await this.count({
+      where: {
+        userId: uId
+      }
+    })
+    let articles = await this.findAll({
+      limit: size,
+      offset,
+      where: {
+        userId: uId
+      },
+      attributes: {
+        exclude: ['content', 'userId']
+        // include: [[fn('COUNT', col('article.Id')), 'total']]
+      },
+      include: [
+        {
+          model: app.model.Adata,
+          as: 'gather',
+          attributes: {
+            exclude: ['Id', 'aId']
+          }
+        }
+      ],
+      order: [
+        ['time', 'DESC']
+      ]
+    })
+
+    return {
+      list: articles,
+      total,
+      current,
+      size
+    }
+  }
+
+  // FIXME: 通过userId，查询到用户所有文章的adata的like总数 this.sum()
+
   // 文章view值 +1
   Article.updateView = async function (Id, view) {
     let res = await this.update(
@@ -90,13 +132,15 @@ module.exports = app => {
   }
 
   // 根据 time排序 查询文章 list
-  Article.getArticlesByTime = async function ({ currPage = 1, size = 10 }) {
-    let offset = (currPage - 1) * size
+  Article.getArticlesByTime = async function ({ current = 1, size = 5 }) {
+    let offset = (current - 1) * size
+    let total = await this.count()
     let articles = await this.findAll({
       limit: size,
       offset,
       attributes: {
         exclude: ['content', 'userId']
+        // include: [[fn('COUNT', col('article.Id')), 'total']]
       },
       include: [
         {
@@ -117,37 +161,64 @@ module.exports = app => {
       order: [
         ['time', 'DESC']
       ]
-      // FIXME: 联表的话就会出现错误的聚合，安装mysql5.7吧
-      // attributes: [
-      //   [fn('MAX', col('Article.Id')), 'total']
-      // ]
     })
-    return articles
+
+    return {
+      list: articles,
+      total,
+      current,
+      size
+    }
   }
 
-  // 根据 view排序 查询文章 list
-  Article.getArticlesByView = async function ({ currPage = 1, size = 10 }) {
-    let offset = (currPage - 1) * size
+  // 根据 like排序 查询文章 list
+  Article.getArticlesByLike = async function ({ current = 1, size = 5 }) {
+    let offset = (current - 1) * size
+    let total = await this.count()
     let articles = await this.findAll({
       limit: size,
       offset,
-      include: {
-        model: app.model.User,
-        as: 'author',
-        attributes: {
-          exclude: ['password']
-        }
+      attributes: {
+        exclude: ['content', 'userId']
+        // include: [[fn('COUNT', col('article.Id')), 'total']]
       },
+      include: [
+        {
+          model: app.model.User,
+          as: 'author',
+          attributes: {
+            exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+          }
+        },
+        {
+          model: app.model.Adata,
+          as: 'gather',
+          attributes: {
+            exclude: ['Id', 'aId']
+          }
+        }
+      ],
       order: [
-        ['view', 'DESC']
+        [{ model: 'Adata' }, 'likeCount', 'DESC']
       ]
     })
-    return articles
+
+    return {
+      list: articles,
+      total,
+      current,
+      size
+    }
   }
 
   // 通过category id获取文章list
-  Article.getArticlesByCId = async function ({ cid = 4, currPage = 1, size = 10 }) {
-    let offset = (currPage - 1) * size
+  Article.getArticlesByCId = async function ({ cid = 4, current = 1, size = 5 }) {
+    let offset = (current - 1) * size
+    let total = await this.count({
+      where: {
+        category: cid
+      }
+    })
     let articles = await this.findAll({
       limit: size,
       offset,
@@ -177,7 +248,12 @@ module.exports = app => {
         ['time', 'DESC']
       ]
     })
-    return articles
+    return {
+      list: articles,
+      total,
+      current,
+      size
+    }
   }
 
   // 增加一篇文章, FIXME: 规范来说，应该拆到service，
