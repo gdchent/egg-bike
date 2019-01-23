@@ -270,8 +270,9 @@ module.exports = app => {
     return res
   }
 
-  // 删除一篇文章
+  // FIXME: 删除一篇文章，删除文章应该要先判断该文章是否是该用户的
   Article.destroyArticle = async function (params) {
+    // FIXME: 下面应该先获取到该文章的uID，然后跟token.id做比对
     let res = this.destroy({
       where: params
     })

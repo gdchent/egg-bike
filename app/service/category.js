@@ -11,16 +11,16 @@ class CategoryService extends Service {
     data.forEach(item => {
       if (item.parentId === 0) {
         res[idx++] = {
-          Id: item.Id,
-          name: item.name,
+          value: item.Id,
+          label: item.name,
           children: []
         }
       } else {
         res.forEach((sub, index) => {
-          if (item.parentId === sub.Id) {
+          if (item.parentId === sub.value) {
             res[index]['children'].push({
-              Id: item.Id,
-              name: item.name
+              value: item.Id,
+              label: item.name
             })
           }
         })
