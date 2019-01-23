@@ -22,30 +22,17 @@ module.exports = app => {
     this.belongsTo(app.model.User, { as: 'uInfo', foreignKey: 'uId', targetKey: 'Id' })
   }
 
-  // 我关注数
-  Follow.getFollowingCountByUId = async function (uId) {
-    // FIXME: 牛逼，有直接提供的count方法
-    let res = await this.count({
+  // 我关注的人
+  Follow.getFollowingsByUId = async function (uId, current = 1, size = 8) {
+    let offset = (current - 1) * size
+    let total = await app.model.Follow.count({
       where: {
         uId
       }
     })
-    return res
-  }
-
-  // 被关注数
-  Follow.getFollowerCountByFId = async function (fId) {
-    let res = await this.count({
-      where: {
-        fId
-      }
-    })
-    return res
-  }
-
-  // 我关注的人
-  Follow.getFollowingsByUId = async function (uId) {
-    let follows = await this.findAll({
+    let followings = await this.findAll({
+      linit: size,
+      offset,
       where: {
         uId
       },
@@ -54,7 +41,7 @@ module.exports = app => {
           model: app.model.User,
           as: 'fInfo',
           attributes: {
-            exclude: ['password']
+            exclude: ['password', 'blog', 'github', 'wechat', 'phone']
           }
         }
       ],
@@ -62,12 +49,25 @@ module.exports = app => {
         exclude: ['Id', 'uId', 'fId']
       }
     })
-    return follows
+    return {
+      list: followings,
+      total,
+      current,
+      size
+    }
   }
 
   // 我的粉丝
-  Follow.getFollowersByFId = async function (fId) {
-    let follows = await this.findAll({
+  Follow.getFollowersByFId = async function (fId, current = 1, size = 8) {
+    let offset = (current - 1) * size
+    let total = await app.model.Follow.count({
+      where: {
+        fId
+      }
+    })
+    let followers = await this.findAll({
+      limit: size,
+      offset,
       where: {
         fId
       },
@@ -76,7 +76,7 @@ module.exports = app => {
           model: app.model.User,
           as: 'uInfo',
           attributes: {
-            exclude: ['password']
+            exclude: ['password', 'blog', 'github', 'wechat', 'phone']
           }
         }
       ],
@@ -84,7 +84,12 @@ module.exports = app => {
         exclude: ['Id', 'uId', 'fId']
       }
     })
-    return follows
+    return {
+      list: followers,
+      total,
+      current,
+      size
+    }
   }
 
   // 是否已关注

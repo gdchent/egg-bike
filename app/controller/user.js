@@ -100,37 +100,39 @@ class UserController extends Controller {
     }
   }
 
-  // FIXME: 这两个只是关注数，在service统合就行了
-  async getFollowingCountByUId () {
-    const ctx = this.ctx
-    const uId = ctx.params.uId
-    let res = await ctx.model.Follow.getFollowingCountByUId(uId)
-    ctx.helper.success(ctx, res)
-  }
-
-  async getFollowerCountByFId () {
-    const ctx = this.ctx
-    const fId = ctx.params.fId
-    let res = await ctx.model.Follow.getFollowerCountByFId(fId)
-    ctx.helper.success(ctx, res)
-  }
-
   // 获取关注列表
   async getFollowingsByUId () {
     const ctx = this.ctx
-    let token = await ctx.helper.parseToken(ctx)
-    let uId = token.id
+    let uId = ctx.params.uId
     let res = await ctx.model.Follow.getFollowingsByUId(uId)
-    ctx.helper.success(ctx, res)
+    // 提取那个恶心心的数据结构
+    let list = []
+    res['list'].forEach(item => {
+      list.push(item['dataValues']['fInfo'])
+    })
+    ctx.helper.success(ctx, {
+      list,
+      count: res.count,
+      size: res.size,
+      current: res.current
+    })
   }
 
   // 获取粉丝列表
   async getFollowersByFId () {
     const ctx = this.ctx
-    let token = await ctx.helper.parseToken(ctx)
-    let fId = token.id
+    let fId = ctx.params.fId
     let res = await ctx.model.Follow.getFollowersByFId(fId)
-    ctx.helper.success(ctx, res)
+    let list = []
+    res['list'].forEach(item => {
+      list.push(item['dataValues']['uInfo'])
+    })
+    ctx.helper.success(ctx, {
+      list,
+      count: res.count,
+      size: res.size,
+      current: res.current
+    })
   }
 
   async createFollow () {
