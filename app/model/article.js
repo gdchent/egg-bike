@@ -1,7 +1,7 @@
 const cheerio = require('cheerio')
 
 module.exports = app => {
-  const { STRING, INTEGER, TEXT, DATE, fn, col } = app.Sequelize
+  const { STRING, INTEGER, TEXT, DATE, Op, fn, col } = app.Sequelize
 
   const Article = app.model.define('article', {
     Id: {
@@ -123,10 +123,15 @@ module.exports = app => {
     return res
   }
 
-  // 根据 title 查询文章 TODO: 改成分页
+  // 根据 title 查询文章
   Article.getArticlesByTitle = async function ({ q }) {
+    let reg = q.split('').join('|')
     let articles = await this.findAll({
-      where: { title: q }
+      where: {
+        title: {
+          [Op.regexp]: reg
+        }
+      }
     })
     return articles
   }

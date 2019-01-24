@@ -22,12 +22,6 @@ class ArticleController extends Controller {
     }
   }
 
-  // TODO: 根据文章名模糊搜索文章
-  async getArticlesByTitle () {
-    const ctx = this.ctx
-    ctx.body = await ctx.model.Article.getArticlesByTitle({ q: ctx.query.q })
-  }
-
   // TODO: 根据uid获取文章
   async getArticlesByUId () {
     const ctx = this.ctx
