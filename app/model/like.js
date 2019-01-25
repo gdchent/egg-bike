@@ -17,7 +17,7 @@ module.exports = app => {
     },
     time: {
       type: DATE,
-      allowNull: true
+      allowNull: false
     }
   })
 
