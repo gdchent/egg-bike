@@ -112,8 +112,6 @@ module.exports = app => {
     }
   }
 
-  // FIXME: 通过userId，查询到用户所有文章的adata的like总数 this.sum()
-
   // 文章view值 +1
   Article.updateView = async function (Id, view) {
     let res = await this.update(
@@ -124,16 +122,54 @@ module.exports = app => {
   }
 
   // 根据 title 查询文章
-  Article.getArticlesByTitle = async function ({ q }) {
-    let reg = q.split('').join('|')
-    let articles = await this.findAll({
+  Article.getArticlesByTitle = async function ({ q, current = 1, size = 5 }) {
+    q = String(q)
+    let reg = q.trim().split('').join('|')
+    let offset = (current - 1) * size
+    let total = await this.count({
       where: {
         title: {
           [Op.regexp]: reg
         }
       }
     })
-    return articles
+    let articles = await this.findAll({
+      limit: size,
+      offset,
+      where: {
+        title: {
+          [Op.regexp]: reg
+        }
+      },
+      attributes: {
+        exclude: ['content', 'userId']
+      },
+      include: [
+        {
+          model: app.model.User,
+          as: 'author',
+          attributes: {
+            exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+          }
+        },
+        {
+          model: app.model.Adata,
+          as: 'gather',
+          attributes: {
+            exclude: ['Id', 'aId']
+          }
+        }
+      ],
+      order: [
+        ['time', 'DESC']
+      ]
+    })
+    return {
+      list: articles,
+      total,
+      current,
+      size
+    }
   }
 
   // 根据 time排序 查询文章 list

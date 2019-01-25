@@ -68,7 +68,7 @@ module.exports = app => {
     return user
   }
 
-  // FIXME: 查询指定用户: 仅用于后台查询，毕竟携带了密码
+  // login查询指定用户: 仅用于后台查询，毕竟携带了密码
   User.getUserByName = async function (username) {
     let user = await this.findOne({
       where: {
@@ -78,21 +78,36 @@ module.exports = app => {
     return user
   }
 
-  // 查询模糊用户 TODO: 改成分页
-  User.getUsersByName = async function ({ q }) {
-    let reg = q.split('').join('|')
-
+  User.getUsersByName = async function ({ q, current = 1, size = 5 }) {
+    // 因为数字的q被我的中间件转化成了数字，导致下面使用trim()报错
+    q = String(q)
+    let reg = q.trim().split('').join('|')
+    let offset = (current - 1) * size
+    let total = await this.count({
+      where: {
+        username: {
+          [Op.regexp]: reg
+        }
+      }
+    })
     let users = await this.findAll({
+      limit: size,
+      offset,
       where: {
         username: {
           [Op.regexp]: reg
         }
       },
       attributes: {
-        exclude: ['password']
+        exclude: ['password', 'blog', 'wechat', 'github']
       }
     })
-    return users
+    return {
+      list: users,
+      total,
+      current,
+      size
+    }
   }
 
   // 更新个人资料
