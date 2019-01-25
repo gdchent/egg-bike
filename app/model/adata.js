@@ -61,6 +61,5 @@ module.exports = app => {
     return result
   }
 
-  // TODO: 要和文章表联立一下，
   return Adata
 }

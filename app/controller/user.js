@@ -46,7 +46,6 @@ class UserController extends Controller {
       ctx.helper.error(ctx, -1, '该用户名已存在')
     } else {
       let hash = await ctx.service.user.encrypt(password)
-      // FIXME: 数据存入数据库
       let res = await ctx.model.User.create({
         username,
         password: hash

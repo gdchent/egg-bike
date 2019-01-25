@@ -8,7 +8,6 @@ const sendToWormhole = require('stream-wormhole')
 const Controller = require('egg').Controller
 
 class UploadController extends Controller {
-  // FIXME: 写一个总的图片上传，避免重复代码
   // TODO: 其实应该写一个头像不超过200kb这类型的拦截
   async imgUpload () {
     const ctx = this.ctx

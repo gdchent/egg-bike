@@ -12,10 +12,10 @@ class CommonController extends Controller {
 
     switch (type) {
       case 'article':
-        res = await ctx.model.Article.getArticlesByTitle({ q: ctx.query.q })
+        res = await ctx.model.Article.getArticlesByTitle(ctx.query)
         break
       case 'user':
-        res = await ctx.model.User.getUsersByName({ q: ctx.query.q })
+        res = await ctx.model.User.getUsersByName(ctx.query)
         break
     }
     if (!res) {
@@ -25,8 +25,6 @@ class CommonController extends Controller {
       ctx.helper.success(ctx, res)
     }
   }
-
-  // TODO: 首页文章list, 这样子的话，文章又要联立用户又要联立adata表
 }
 
 module.exports = CommonController

@@ -22,7 +22,7 @@ class ArticleController extends Controller {
     }
   }
 
-  // TODO: 根据uid获取文章
+  // 根据uid获取文章
   async getArticlesByUId () {
     const ctx = this.ctx
     let uId = ctx.params.id
@@ -85,7 +85,6 @@ class ArticleController extends Controller {
   // 修改一篇文章, 不给修改功能吧，考虑下
   async update () {}
 
-  // FIXME: 了解完传参数和传路径再说啦
   async getArticle () {
     const ctx = this.ctx
     const { id } = ctx.request.body
