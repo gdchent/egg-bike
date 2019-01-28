@@ -1,7 +1,7 @@
 // 前台系统的路由接口
 
 module.exports = app => {
-  const { router, controller } = app
+  const { router, controller, io } = app
   // All
   router.post('/login', controller.user.login)
   router.post('/register', controller.user.register)
@@ -52,4 +52,8 @@ module.exports = app => {
 
   // upload
   router.post('/upload/img/:type', controller.upload.imgUpload)
+
+  // socket io
+  io.of('/').route('chat', io.controller.chat.test)
+  io.of('/').route('toOther', io.controller.chat.sendToOther)
 }

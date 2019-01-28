@@ -24,7 +24,7 @@ module.exports = appInfo => {
 
   // jwt
   // 暂时性不拦截路由
-  const arr = ['/upload', '/like', '/comment']
+  const arr = ['/upload', '/like', '/comment', '/chat']
   config.jwt = {
     enable: true,
     secret: 'cheesekun',
