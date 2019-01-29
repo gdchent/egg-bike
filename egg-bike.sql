@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-01-28 18:00:35
+Date: 2019-01-29 17:33:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -376,11 +376,12 @@ CREATE TABLE `messages` (
   `date` datetime DEFAULT NULL,
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '0/1 未读/已读',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of messages
 -- ----------------------------
+INSERT INTO `messages` VALUES ('1', '1', '11', '3', '这是一条测试用私聊消息', '2019-01-29 15:45:57', '0');
 
 -- ----------------------------
 -- Table structure for plans
@@ -437,13 +438,14 @@ CREATE TABLE `rooms` (
   `uId` int(11) NOT NULL,
   `oId` int(11) DEFAULT NULL COMMENT '对方用户id',
   `lastMsgContent` varchar(255) DEFAULT NULL,
-  `last_msg_date` datetime DEFAULT NULL,
+  `lastMsgDate` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of rooms
 -- ----------------------------
+INSERT INTO `rooms` VALUES ('1', '12', '3', '这是最后的测试聊天私信', '2019-01-29 15:30:18');
 
 -- ----------------------------
 -- Table structure for users
