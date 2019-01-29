@@ -53,7 +53,14 @@ module.exports = app => {
   // upload
   router.post('/upload/img/:type', controller.upload.imgUpload)
 
+  // message
+  // 获取聊天内容
+  router.get('/chat/:roomId', controller.message.getMsgsByRoomId)
+  router.get('/chat', controller.message.getRooms)
+  // 创建房间先mock
+
   // socket io
   io.of('/').route('chat', io.controller.chat.test)
   io.of('/').route('toOther', io.controller.chat.sendToOther)
+  io.of('/').route('exchange', io.controller.chat.exchange)
 }

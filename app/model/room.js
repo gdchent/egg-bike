@@ -26,7 +26,37 @@ module.exports = app => {
   })
 
   Room.associate = function () {
-    this.belongsTo(app.model.User, { as: 'user', foreignKey: 'uId', targertKey: 'Id' })
+    this.belongsTo(app.model.User, { as: 'rUser', foreignKey: 'uId', targertKey: 'Id' })
+  }
+
+  // FIXME: 麻烦的是last_msg_content怎么做保存
+  // 并且第一次创建和接下来的查看，你还要先去做一次查询么
+  // 每次点击私信按钮，就要先查询一下之前私信了没，是否创建了room
+  // 先伪造一下数据库数据吧，之后再想想create要怎么搞
+  Room.createRoom = async function () {
+
+  }
+
+  // 通过我的id去查询rooms，不做分页
+  Room.getRooms = async function (uId) {
+    let rooms = await this.findAll({
+      where: {
+        uId
+      },
+      include: [
+        {
+          model: app.model.User,
+          as: 'rUser',
+          attributes: {
+            exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+          }
+        }
+      ],
+      order: [
+        ['lastMsgDate', 'ASC']
+      ]
+    })
+    return rooms
   }
 
   return Room

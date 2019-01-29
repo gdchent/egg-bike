@@ -48,7 +48,7 @@ module.exports = app => {
   User.associate = function () {
     this.hasMany(app.model.Article, { foreignKey: 'userId', targetKey: 'Id' })
     this.hasMany(app.model.Comment, { as: 'user', foreignKey: 'uId', targetKey: 'Id' })
-    this.hasMany(app.model.Message, { as: 'mUser', foreignKey: 'sendId', targetKey: 'Id' })
+    this.hasMany(app.model.Message, { as: 'sUser', foreignKey: 'sendId', targetKey: 'Id' })
     this.hasMany(app.model.Room, { as: 'rUser', foreignKey: 'oId', target: 'Id' })
     this.hasMany(app.model.Reply, { as: 'fUser', foreignKey: 'fromId', targetKey: 'Id' })
     this.hasMany(app.model.Reply, { as: 'tUser', foreignKey: 'toId', targetKey: 'Id' })
