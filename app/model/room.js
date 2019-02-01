@@ -26,7 +26,8 @@ module.exports = app => {
   })
 
   Room.associate = function () {
-    this.belongsTo(app.model.User, { as: 'rUser', foreignKey: 'uId', targertKey: 'Id' })
+    this.belongsTo(app.model.User, { as: 'oUser', foreignKey: 'oId', targertKey: 'Id' })
+    this.belongsTo(app.model.User, { as: 'uUser', foreignKey: 'uId', targertKey: 'Id' })
   }
 
   // FIXME: 麻烦的是last_msg_content怎么做保存
@@ -38,15 +39,31 @@ module.exports = app => {
   }
 
   // 通过我的id去查询rooms，不做分页
+  // FIXME: 这里不能单单只通过uId做判断，oId也要进行获取
+  // 因为uId本人有room，对方发给我，也会是一个room，这个room里面我是oId
   Room.getRooms = async function (uId) {
     let rooms = await this.findAll({
       where: {
-        uId
+        $or: [
+          {
+            uId
+          },
+          {
+            oId: uId
+          }
+        ]
       },
       include: [
         {
           model: app.model.User,
-          as: 'rUser',
+          as: 'uUser',
+          attributes: {
+            exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+          }
+        },
+        {
+          model: app.model.User,
+          as: 'oUser',
           attributes: {
             exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
           }
