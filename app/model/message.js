@@ -99,7 +99,10 @@ module.exports = app => {
   }
 
   Message.createMessage = async function (body) {
-    let res = await this.create(body)
+    let res = await this.create({
+      date: new Date(),
+      ...body
+    })
     return res
   }
 

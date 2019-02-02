@@ -18,9 +18,11 @@ class MessageController extends Controller {
   }
 
   // 创建一条msg
+  // FIXME: 里面的sendId应该是从token中提取
   async createMessage (body) {
     const ctx = this.ctx
-    let res = ctx.model.Message.createMessage(ctx.request.body)
+    let roomId = ctx.params.roomId
+    let res = ctx.model.Message.createMessage({ roomId: Number(roomId), ...ctx.request.body })
     // FIXME: 我的天，一条消息插一次数据库，redis的作用？
     if (res) {
       ctx.helper.success(ctx, res)

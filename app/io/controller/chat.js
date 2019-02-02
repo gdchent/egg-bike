@@ -21,13 +21,11 @@ class ChatController extends Controller {
   }
   async exchange () {
     const ctx = this.ctx
-    // FIXME: 要在这里获取userId么
     const info = ctx.args[0] || {}
     // const socket = ctx.socket
     // const client = socket.id
 
-    // FIXME: 这里的'3'是写死的
-    ctx.app.io.of('/').emit(String(info.id), info.msg)
+    ctx.app.io.of('/').emit(String(info.recId), info)
   }
 }
 
