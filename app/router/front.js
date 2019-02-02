@@ -40,6 +40,7 @@ module.exports = app => {
 
   // Like
   router.get('/like', controller.like.isLike)
+  router.get('/likelist', controller.like.getLikeList)
   router.post('/like', controller.like.createLike)
   router.delete('/like', controller.like.destroyLike)
 
@@ -56,6 +57,8 @@ module.exports = app => {
   // message
   // 获取聊天内容
   router.get('/chat/:roomId', controller.message.getMsgsByRoomId)
+  router.post('/chat/:roomId', controller.message.createMessage)
+
   router.get('/chat', controller.message.getRooms)
   // 创建房间先mock
 

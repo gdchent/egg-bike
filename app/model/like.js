@@ -21,6 +21,10 @@ module.exports = app => {
     }
   })
 
+  Like.associate = function () {
+    this.hasOne(app.model.Article, { as: 'article', foreignKey: 'Id' })
+  }
+
   // 添加喜欢(不需要判断是否已喜欢，原子化)
   Like.createLike = async function (body) {
     let res = await this.create(body)
@@ -46,6 +50,48 @@ module.exports = app => {
     })
     if (res) isLike = true
     return { isLike }
+  }
+
+  // 获取用户喜欢列表, 不分页
+  Like.getLikeList = async function (uId) {
+    let likes = await this.findAll({
+      where: {
+        uId
+      },
+      attributes: {
+        exclude: ['aId', 'uId']
+      },
+      include: [
+        {
+          model: app.model.Article,
+          as: 'article',
+          attributes: {
+            exclude: ['content', 'userId']
+          },
+          include: [
+            {
+              model: app.model.Adata,
+              as: 'gather',
+              attributes: {
+                exclude: ['Id', 'aId']
+              }
+            },
+            {
+              model: app.model.User,
+              as: 'author',
+              attributes: {
+                exclude: ['password', 'sex', 'introduction', 'blog', 'github', 'wechat']
+              }
+            }
+          ]
+        }
+      ],
+      order: [
+        ['time', 'DESC']
+      ]
+    })
+
+    return likes
   }
 
   return Like
