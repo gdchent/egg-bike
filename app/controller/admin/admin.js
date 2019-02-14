@@ -1,6 +1,7 @@
 'use strict'
 
 const Controller = require('egg').Controller
+const bcrypt = require('bcryptjs')
 
 class AdminController extends Controller {
   async index () {
@@ -11,12 +12,16 @@ class AdminController extends Controller {
   async login () {
     const ctx = this.ctx
     const { username, password } = ctx.request.body
-    let user = await ctx.model.User.find({ username })
-    if (password !== user.password) {
-      ctx.helper.error(ctx, -1, '密码错误')
+    let user = await ctx.model.User.getUserByName(username)
+    if (!user) {
+      ctx.helper.error(ctx, -1, '该账户不存在')
     } else {
-      let token = await ctx.service.token.createToken({ role: 'admin', id: user.Id })
-      ctx.helper.success(ctx, { token })
+      if (!bcrypt.compareSync(password, user.password)) {
+        ctx.helper.error(ctx, -1, '密码错误')
+      } else {
+        let token = await ctx.service.token.createToken({ role: 'admin', id: user.Id })
+        ctx.helper.success(ctx, { token })
+      }
     }
   }
 

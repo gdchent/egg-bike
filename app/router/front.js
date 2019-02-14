@@ -6,7 +6,7 @@ module.exports = app => {
   router.post('/login', controller.user.login)
   router.post('/register', controller.user.register)
 
-  router.get('/auth', app.middlewares.ifUser(), controller.user.auth)
+  // router.get('/auth', app.middlewares.ifUser(), controller.user.auth)
 
   // User
   router.get('/user', controller.user.getMe)

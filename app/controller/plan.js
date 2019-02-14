@@ -29,7 +29,7 @@ class PlanController extends Controller {
   async getPlans () {
     const ctx = this.ctx
     let token = await ctx.helper.parseToken(ctx)
-    let uId = token.uId
+    let uId = token.id
     let res = await ctx.model.Plan.getPlans(uId)
     if (res) {
       ctx.helper.success(ctx, res)

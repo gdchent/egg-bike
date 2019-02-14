@@ -150,10 +150,14 @@ class UserController extends Controller {
     ctx.helper.success(ctx, res)
   }
 
-  async auth () {
+  // ====== admin =======
+  async getUsers () {
     const ctx = this.ctx
-    ctx.body = {
-      auth: 'ok'
+    let users = await ctx.model.User.findAll()
+    if (!users) {
+      ctx.helper.error(ctx, -1, '该账户不存在')
+    } else {
+      ctx.helper.success(ctx, users)
     }
   }
 }
